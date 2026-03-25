@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis'
 
-const isDev= process.env.NODE_ENV=`development`
+const isDev= process.env.NODE_ENV===`development`
 
 const url = isDev
 ? {
