@@ -1,8 +1,8 @@
 import { Queue } from "bullmq";
-import { redisConnection } from "../config/redis.js";
+import redis from "../config/redis.js";
 
 const settings ={
-  connection: redisConnection,
+  connection: redis,
   defaultJobOptions: {
     attempts: 3,
     backoff: {

@@ -27,13 +27,13 @@ import { isAuthenticated, isLoggedIn } from './src/middleware/middleware.js'
 import startCron from './src/utils/cron.js'
 
 // Workers
-// import './src/workers/welcomeEmail.worker.js'
-// import './src/workers/newsFetch.worker.js'
-// import './src/workers/digest.worker.js'
-// import './src/workers/inactivity.worker.js'
+import './src/workers/welcomeEmail.worker.js'
+import './src/workers/newsFetch.worker.js'
+import './src/workers/digest.worker.js'
+import './src/workers/inactivity.worker.js'
 import { helmetObj } from './src/utils/utils.js'
 
-console.log(process.env.REDIS_URL);
+
 
 const app = express()
 const __filename = fileURLToPath(import.meta.url)
