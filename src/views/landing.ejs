@@ -1,0 +1,54 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="max-w-6xl mx-auto px-6 py-24 text-center">
+  
+  <!-- Hero -->
+  <h1 class="text-6xl font-bold tracking-tight mb-6">
+    Your daily news, <br/>
+    <span class="text-gray-400">curated for you.</span>
+  </h1>
+  <p class="text-gray-500 dark:text-gray-400 text-xl max-w-xl mx-auto mb-10">
+    Curio delivers personalized news digests straight to your inbox. 
+    Pick your interests, set your frequency, stay informed.
+  </p>
+  <div class="flex items-center justify-center gap-4">
+    <a href="/auth?type=signup"
+      class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-3 rounded-lg text-lg font-medium hover:opacity-90 transition">
+      Get Started Free
+    </a>
+    <a href="/auth?type=login"
+      class="text-gray-600 dark:text-gray-400 px-8 py-3 rounded-lg text-lg hover:underline">
+      Login
+    </a>
+  </div>
+
+  <!-- Features -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 text-left">
+    
+    <div class="p-6 border border-gray-200 dark:border-gray-800 rounded-xl">
+      <div class="text-3xl mb-4">📰</div>
+      <h3 class="font-semibold text-lg mb-2">Personalized Feed</h3>
+      <p class="text-gray-500 dark:text-gray-400 text-sm">
+        Choose from 13 categories and get news that actually interests you.
+      </p>
+    </div>
+
+    <div class="p-6 border border-gray-200 dark:border-gray-800 rounded-xl">
+      <div class="text-3xl mb-4">📧</div>
+      <h3 class="font-semibold text-lg mb-2">Email Digest</h3>
+      <p class="text-gray-500 dark:text-gray-400 text-sm">
+        Receive a curated digest every 1 to 7 days — you choose the frequency.
+      </p>
+    </div>
+
+    <div class="p-6 border border-gray-200 dark:border-gray-800 rounded-xl">
+      <div class="text-3xl mb-4">⚡</div>
+      <h3 class="font-semibold text-lg mb-2">Always Fresh</h3>
+      <p class="text-gray-500 dark:text-gray-400 text-sm">
+        News fetched daily from 200+ countries across 13 categories.
+      </p>
+    </div>
+
+  </div>
+
+</section>

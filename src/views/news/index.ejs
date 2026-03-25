@@ -1,0 +1,102 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+  <!-- Unverified Banner -->
+  <% if (currentUser.status === 'unverified') { %>
+    <div class="flex items-center justify-between bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300 px-4 py-3 rounded-lg mb-6">
+      <p class="text-sm">📧 Please verify your email to read full articles</p>
+      <a href="/auth/resend-verification" class="text-sm underline font-medium">Resend email</a>
+    </div>
+  <% } %>
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold">Your Feed</h1>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+        Latest news across your categories
+      </p>
+    </div>
+    <a href="/user/profile"
+      class="text-sm border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+      ⚙️ Preferences
+    </a>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">
+    <a href="/news"
+      class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-gray-900 dark:bg-white text-white dark:text-gray-900">
+      All
+    </a>
+    <% currentUser.categories.forEach(cat => { %>
+      <a href="/news/<%= cat %>"
+        class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 transition capitalize">
+        <%= cat %>
+      </a>
+    <% }) %>
+  </div>
+
+  <!-- Articles By Category -->
+  <% currentUser.categories.forEach(cat => { %>
+    <% if (articlesByCategory[cat] && articlesByCategory[cat].length > 0) { %>
+      <div class="mb-12">
+
+        <!-- Category Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold capitalize"><%= cat %></h2>
+          <a href="/news/<%= cat %>"
+            class="text-sm text-gray-500 dark:text-gray-400 hover:underline">
+            View all →
+          </a>
+        </div>
+
+        <!-- Articles Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% articlesByCategory[cat].slice(0, 3).forEach(article => { %>
+            <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:shadow-md transition">
+
+              <!-- Image -->
+              <% if (article.image) { %>
+                <img src="<%= article.image %>" alt="<%= article.title %>"
+                  class="w-full h-40 object-cover"/>
+              <% } else { %>
+                <div class="w-full h-40 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <span class="text-3xl">📰</span>
+                </div>
+              <% } %>
+
+              <!-- Content -->
+              <div class="p-4">
+                <span class="text-xs text-gray-400 capitalize"><%= article.source %></span>
+                <h3 class="font-semibold text-sm mt-1 mb-2 line-clamp-2">
+                  <%= article.title %>
+                </h3>
+                <p class="text-gray-500 dark:text-gray-400 text-xs line-clamp-2 mb-3">
+                  <%= article.description %>
+                </p>
+
+                <!-- Read More -->
+                <% if (currentUser.status === 'active') { %>
+                  <a href="/news/read?url=<%= encodeURIComponent(article.url) %>"
+                    target="_blank"
+                    class="text-xs font-medium underline">
+                    Read More →
+                  </a>
+                <% } else { %>
+                  <span class="text-xs text-yellow-600 dark:text-yellow-400">
+                    🔒 Verify email to read
+                  </span>
+                <% } %>
+
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+      </div>
+    <% } %>
+  <% }) %>
+
+</div>

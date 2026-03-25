@@ -1,0 +1,105 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+  <!-- Header -->
+  <div class="flex items-center gap-3 mb-8">
+    <a href="/news" class="text-gray-500 dark:text-gray-400 hover:underline text-sm">
+      ← Back to Feed
+    </a>
+    <span class="text-gray-300 dark:text-gray-700">/</span>
+    <h1 class="text-2xl font-bold capitalize"><%= category %></h1>
+  </div>
+
+  <!-- Articles Grid -->
+  <% if (articles.length === 0) { %>
+    <div class="text-center py-20">
+      <p class="text-4xl mb-4">📭</p>
+      <p class="text-gray-500 dark:text-gray-400">No articles found in this category.</p>
+      <a href="/news" class="text-sm underline mt-4 inline-block">Back to feed</a>
+    </div>
+  <% } else { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <% articles.forEach(article => { %>
+        <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:shadow-md transition">
+
+          <!-- Image -->
+          <% if (article.image) { %>
+            <img src="<%= article.image %>" alt="<%= article.title %>"
+              class="w-full h-48 object-cover"/>
+          <% } else { %>
+            <div class="w-full h-48 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <span class="text-4xl">📰</span>
+            </div>
+          <% } %>
+
+          <!-- Content -->
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs text-gray-400 capitalize"><%= article.source %></span>
+              <span class="text-xs text-gray-400">
+                <%= new Date(article.publishedAt).toLocaleDateString() %>
+              </span>
+            </div>
+            <h3 class="font-semibold text-sm mb-2 line-clamp-2">
+              <%= article.title %>
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 text-xs line-clamp-3 mb-4">
+              <%= article.description %>
+            </p>
+
+            <!-- Read More -->
+            <% if (currentUser.status === 'active') { %>
+              <a href="/news/read?url=<%= encodeURIComponent(article.url) %>"
+                target="_blank"
+                class="text-xs font-medium underline">
+                Read More →
+              </a>
+            <% } else { %>
+              <span class="text-xs text-yellow-600 dark:text-yellow-400">
+                🔒 Verify email to read
+              </span>
+            <% } %>
+
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+      <div class="flex items-center justify-center gap-2">
+
+        <!-- Previous -->
+        <% if (currentPage > 1) { %>
+          <a href="/news/<%= category %>?page=<%= currentPage - 1 %>"
+            class="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+            ← Previous
+          </a>
+        <% } %>
+
+        <!-- Page Numbers -->
+        <% for(let i = 1; i <= totalPages; i++) { %>
+          <a href="/news/<%= category %>?page=<%= i %>"
+            class="px-4 py-2 rounded-lg text-sm transition
+              <%= currentPage === i 
+                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' 
+                : 'border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900' %>">
+            <%= i %>
+          </a>
+        <% } %>
+
+        <!-- Next -->
+        <% if (currentPage < totalPages) { %>
+          <a href="/news/<%= category %>?page=<%= currentPage + 1 %>"
+            class="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-900 transition">
+            Next →
+          </a>
+        <% } %>
+
+      </div>
+    <% } %>
+
+  <% } %>
+
+</div>
