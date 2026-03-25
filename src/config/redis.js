@@ -1,7 +1,11 @@
 import { Redis } from 'ioredis'
 
 // For BullMQ
-export const redisConnection = process.env.REDIS_URL
+export const redisConnection = {
+  connection: {
+    url: process.env.REDIS_URL,
+  },
+}
 
 // For direct Redis operations (caching)
 const redis = new Redis(process.env.REDIS_URL)
