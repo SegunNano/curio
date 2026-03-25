@@ -87,6 +87,7 @@ export const login = async (req, res) => {
    await recreateToken(user)
   }
 
+  generateToken(res, user._id)
   req.flash('error', 'Please verify your email. A new verification link has been sent.')
   return res.redirect('/news')
 }

@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export const sendVerificationEmail = async ({ name, email, verificationUrl }) => {
+  
   try {
     await transporter.sendMail({
       from: `"Curio" <${process.env.GMAIL_USER}>`,
