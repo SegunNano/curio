@@ -5,7 +5,7 @@ const url = process.env.NODE_ENV=`develoment`
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
 }
-:  process.env.REDIS_URL
+:  {url: process.env.REDIS_URL}
 // For BullMQ
 export const redisConnection = url
 
