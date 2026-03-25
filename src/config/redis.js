@@ -1,16 +1,16 @@
 import { Redis } from 'ioredis'
 
-// For BullMQ
-export const redisConnection = {
+const url = process.env.NODE_ENV=`develoment`
+? {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
 }
+:  process.env.REDIS_URL
+// For BullMQ
+export const redisConnection = url
 
 // For direct Redis operations (caching)
-const redis = new Redis({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-})
+const redis = new Redis(url)
 
 redis.on('connect', () => console.log('Redis connected 🟢'))
 redis.on('error', (err) => console.error('Redis error:', err.message))
