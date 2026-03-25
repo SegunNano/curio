@@ -1,6 +1,8 @@
 import { Redis } from 'ioredis'
 
-const url = process.env.NODE_ENV=`develoment`
+const isDev= process.env.NODE_ENV=`development`
+
+const url = isDev
 ? {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
