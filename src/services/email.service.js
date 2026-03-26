@@ -2,15 +2,14 @@ import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  service: 'gmail',
+    secure: false,
+    family: 4,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
   },
-    connectionTimeout: 10000, // 10s
-   greetingTimeout: 10000,
-    socketTimeout: 10000,
 })
 
 export const sendVerificationEmail = async ({ name, email, verificationUrl }) => {
