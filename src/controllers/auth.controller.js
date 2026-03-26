@@ -77,7 +77,7 @@ export const login = async (req, res) => {
       return res.redirect('/auth?type=login')
     }
 
-    const cachedUser= await redis.get(`user:${user._Id}`)
+    const cachedUser= await redis.get(`user:${user._id}`)
     if ( cachedUser) await redis.del(`user:${req.user._id}`)
    // Check if user is verified
     if (user.status === 'unverified') {
