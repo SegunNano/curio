@@ -68,8 +68,7 @@ export const login = async (req, res) => {
       req.flash('error', 'Invalid email or password')
       return res.redirect('/auth?type=login')
     }
-      const cachedUser= await redis.get(`user:${user._Id}`)
-    if ( cachedUser) await redis.del(`user:${req.user._id}`)
+     
   
    // Check password
     const isMatch = await bcrypt.compare(password, user.password)
@@ -77,7 +76,9 @@ export const login = async (req, res) => {
       req.flash('error', 'Invalid email or password')
       return res.redirect('/auth?type=login')
     }
-       
+
+    const cachedUser= await redis.get(`user:${user._Id}`)
+    if ( cachedUser) await redis.del(`user:${req.user._id}`)
    // Check if user is verified
     if (user.status === 'unverified') {
       // Check if token still valid, if not generate new one
