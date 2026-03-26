@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
-import { CATEGORIES } from '../utils/constants.js'
+import mongoose from "mongoose";
+import { CATEGORIES } from "../utils/constants.js";
 
-const { Schema, model, models } = mongoose
+const { Schema, model, models } = mongoose;
 
 const articleSchema = new Schema(
   {
@@ -41,14 +41,14 @@ const articleSchema = new Schema(
       default: Date.now,
     },
   },
-  { timestamps: true }
-)
+  { timestamps: true },
+);
 
-articleSchema.index({ category: 1, publishedAt: -1 })
+articleSchema.index({ category: 1, publishedAt: -1 });
 
 // TTL index — auto delete after 7 days
-articleSchema.index({ fetchedAt: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 })
+articleSchema.index({ fetchedAt: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 });
 
-const Article = models?.Article || model('Article', articleSchema)
+const Article = models?.Article || model("Article", articleSchema);
 
-export default Article
+export default Article;

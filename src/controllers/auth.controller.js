@@ -14,7 +14,6 @@ export const signup = async (req, res) => {
     const { name, email, password, categories, digestFrequency } = req.body
     
     if (!validator.isEmail(email)) {
-      console.log({email});
       req.flash('error', 'Invalid email address')
       return res.redirect('/auth?type=signup')
     }
@@ -54,57 +53,58 @@ export const signup = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    try {
-        const { email, password } = req.body
+  try {
+    const { email, password } = req.body
         
-        // Validate email format
-        if (!validator.isEmail(email)) {
-            req.flash('error', 'Invalid email address')
-            return res.redirect('/auth?type=login')
-        }
+    // Validate email format
+     if (!validator.isEmail(email)) {
+      req.flash('error', 'Invalid email address')
+      return res.redirect('/auth?type=login')
+    }
         
-        // Check if user exists
-        const user = await User.findOne({ email }).select('+password')
-        if (!user) {
-            req.flash('error', 'Invalid email or password')
-            return res.redirect('/auth?type=login')
-        }
-        // Check password
-        const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) {
-            req.flash('error', 'Invalid email or password')
-            return res.redirect('/auth?type=login')
-        }
+    // Check if user exists
+    const user = await User.findOne({ email }).select('+password')
+    if (!user) {
+      req.flash('error', 'Invalid email or password')
+      return res.redirect('/auth?type=login')
+    }
+  
+   // Check password
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+      req.flash('error', 'Invalid email or password')
+      return res.redirect('/auth?type=login')
+    }
        
-        // Check if user is verified
-        if (user.status === 'unverified') {
-            // Check if token still valid, if not generate new one
-            const tokenStillValid = user.verificationTokenExpiry > new Date()
-            
-            if (tokenStillValid) {
-    addToWelcomeEmailQueue(user._id, user.name, user.email, user.verificationToken)
-  } else {
-   await recreateToken(user)
-  }
-
-  generateToken(res, user._id)
-  req.flash('error', 'Please verify your email. A new verification link has been sent.')
-  return res.redirect('/news')
-}
-
+   // Check if user is verified
+    if (user.status === 'unverified') {
+      // Check if token still valid, if not generate new one
+      const tokenStillValid = user.verificationTokenExpiry > new Date()
+         
+      if (tokenStillValid) {
+      addToWelcomeEmailQueue(user._id, user.name, user.email, user.verificationToken)
+      } else {
+        await recreateToken(user)
+      }
+   // Generate token
+    generateToken(res, user._id)
+// Check if there's a saved redirect
+const redirectUrl = req.session.returnTo || '/news'
+    // req.flash('error', `Welcome back ${user.name}!, Please verify your email. A new verification link has been sent.`)
+     return res.redirect(redirectUrl)
+    }
     // Check if user is inactive
     if (user.status === 'inactive') {
       user.status = 'active'
       user.lastActiveAt = new Date()
      await user.save()
-    }
-
-    // Generate token
+     }
+   // Generate token
     generateToken(res, user._id)
-// Check if there's a saved redirect
+    // Check if there's a saved redirect
 const redirectUrl = req.session.returnTo || '/news'
 delete req.session.returnTo // clean up
-    req.flash('success', `Welcome back ${user.name}! 🎉`)
+ req.flash('success', `Welcome back ${user.name}! 🎉`)
     res.redirect(redirectUrl)
   } catch (error) {
     console.error('Login error:', error.message)
