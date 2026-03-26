@@ -11,11 +11,9 @@ export const getNews = async (req, res) => {
       const cached = await redis.get(cacheKey)
 
       if (cached) {
-        console.log(`${category} from cache 🟡`)
-        allArticles.push(...JSON.parse(cached))
+                allArticles.push(...JSON.parse(cached))
       } else {
-        console.log(`${category} from DB 🟢`)
-        const articles = await Article.find({ category })
+               const articles = await Article.find({ category })
           .sort({ publishedAt: -1 })
           .limit(20)
 
@@ -49,8 +47,7 @@ export const getNewsByCategory = async (req, res) => {
     const pageCacheKey = `news:${category}:page:${page}`
     const cachedPage = await redis.get(pageCacheKey)
     if (cachedPage) {
-      console.log('Page from cache 🟡')
-      return res.render('news/category', JSON.parse(cachedPage))
+        return res.render('news/category', JSON.parse(cachedPage))
     }
 
     // Check category cache
@@ -62,14 +59,12 @@ export const getNewsByCategory = async (req, res) => {
 
     if (cachedCategory) {
       // Slice from category cache
-      console.log(`Slicing ${category} from cache 🟡`)
       const allArticles = JSON.parse(cachedCategory)
       total = allArticles.length
       articles = allArticles.slice((page - 1) * limit, page * limit)
     } else {
       // Fall back to DB
-      console.log(`${category} from DB 🟢`)
-
+  
         const allArticles = await Article.find({ category })
         .sort({ publishedAt: -1 })
         await redis.set(categoryCacheKey, JSON.stringify(allArticles), 'EX', 30 * 60)

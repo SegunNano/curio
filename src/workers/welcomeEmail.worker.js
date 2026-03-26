@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import { redisConnection } from "../config/redis.js";
-import { sendVerificationEmail } from "../services/email.service.js";
+import { sendVerificationEmail } from "../services/resend.service.js";
 
 
 const welcomeEmailWorker = new Worker(
