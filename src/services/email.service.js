@@ -8,11 +8,16 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
   },
+    connectionTimeout: 10000, // 10s
+   greetingTimeout: 10000,
+    socketTimeout: 10000,
 })
 
 export const sendVerificationEmail = async ({ name, email, verificationUrl }) => {
-  
+
   try {
+    await transporter.verify()
+    console.log('SMTP ready ✅')
     await transporter.sendMail({
       from: `"Curio" <${process.env.GMAIL_USER}>`,
       to: email,

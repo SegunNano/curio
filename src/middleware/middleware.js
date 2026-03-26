@@ -19,7 +19,7 @@ import redis from '../config/redis.js';
            req.user = await User.findByIdAndUpdate(
             decoded.userId,
             { $set: { lastActiveAt: new Date() } },
-           { new: true }
+           { returnDocument: after }
           )
               // Cache for 5 minutes
           await redis.set(`user:${decoded.userId}`, JSON.stringify(req.user), 'EX', 300)

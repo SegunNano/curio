@@ -40,6 +40,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // 1. Security first
+app.set('trust proxy', 1)
 app.use(helmet(helmetObj))
 // app.use(mongoSanitize())
 app.use(hpp())

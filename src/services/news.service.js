@@ -50,7 +50,7 @@ const saveArticles = async (articles, category) => {
             publishedAt: article.pubDate ? new Date(article.pubDate) : null,
             fetchedAt: new Date(),
           },
-        },  { upsert: true, returnDocument: 'after' } // 👈 replace `new: true`
+        },  { upsert: true, returnDocument: 'after' } 
       )
       saved++
     } catch (error) {
